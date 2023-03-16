@@ -1,4 +1,0 @@
-repository "S4-Duo@S4DuoGame@cloud"
-  path "/"
-    br "/main"
-    co "/main"
