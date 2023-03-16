@@ -15,7 +15,9 @@ public class ThirdPersonMovement : MonoBehaviour
     Vector2 movement;
     public float walkSpeed = 3f;
     public float sprintSpeed = 5f;
+    public float CrouchSpeed = 1.5f;
     bool sprinting;
+    bool _isCrouching;
     private float trueSpeed;
 
     public float jumpHeight = 2f;
@@ -61,6 +63,21 @@ public class ThirdPersonMovement : MonoBehaviour
 
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            trueSpeed = CrouchSpeed;
+            _isCrouching = true;
+            anim.SetBool("IsSneaking", _isCrouching);
+
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            trueSpeed = walkSpeed;
+            _isCrouching = false;
+            anim.SetBool("IsSneaking", _isCrouching);
+
+        }
+
         anim.transform.localPosition = Vector3.zero;
         anim.transform.localEulerAngles = Vector3.zero;
         if (direction.magnitude >= 0.1f)
@@ -87,12 +104,12 @@ public class ThirdPersonMovement : MonoBehaviour
             anim.SetFloat("Speed", 0);
 
         }
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            anim.SetBool("isJumping", true);
-            isJumping = true;
-            velocity.y = Mathf.Sqrt((jumpHeight * 10) * -2 * gravity);
-        }
+        //if (Input.GetButtonDown("Jump") && isGrounded)
+        //{
+        //    anim.SetBool("isJumping", true);
+        //    isJumping = true;
+        //    velocity.y = Mathf.Sqrt((jumpHeight * 10) * -2 * gravity);
+        //}
         if (!isGrounded)
         {
             isJumping = true;
