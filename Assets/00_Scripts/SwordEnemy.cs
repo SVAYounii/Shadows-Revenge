@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -44,6 +43,7 @@ public class SwordEnemy : HitAble
     bool _playerIsClose;
     bool _once;
     Vector3 randomDirection;
+    public int rnd;
     public enum State
     {
         Roaming,
@@ -56,14 +56,14 @@ public class SwordEnemy : HitAble
     // Start is called before the first frame update
     void Start()
     {
-        EnemyState = State.Roaming;
         Player = GameObject.FindGameObjectWithTag("Player");
         animator = this.gameObject.GetComponent<Animator>();
-        if (WalkPlaces.Count > 0 && Agent != null)
+        if (EnemyState == State.Roaming)
         {
-            StartWalking();
+            rnd = Random.Range(0, WalkPlaces.Count);
+            WalkTo(WalkPlaces[rnd]);
         }
-        StartCoroutine(FOVRoutine());
+        //StartCoroutine(FOVRoutine());
     }
 
     // Update is called once per frame
@@ -271,16 +271,7 @@ public class SwordEnemy : HitAble
     void StartWalking()
     {
 
-        WalkTo(WalkPlaces[_index]);
-        if (_index == WalkPlaces.Count - 1)
-        {
-
-            _index = 0;
-        }
-        else
-        {
-            _index++;
-        }
+        WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
 
     }
     private IEnumerator FOVRoutine()
