@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 
 public class SwordEnemy : HitAble
@@ -32,6 +33,7 @@ public class SwordEnemy : HitAble
 
     [Header("UI Settings")]
     public GameObject UI;
+    UnityEngine.UI.Image HealthImage;
 
     [HideInInspector]
     public GameObject Player;
@@ -58,12 +60,14 @@ public class SwordEnemy : HitAble
     {
         Player = GameObject.FindGameObjectWithTag("Player");
         animator = this.gameObject.GetComponent<Animator>();
+        HealthImage = UI.GetComponent<Image>();
         if (EnemyState == State.Roaming)
         {
             rnd = Random.Range(0, WalkPlaces.Count);
             WalkTo(WalkPlaces[rnd]);
+
         }
-        //StartCoroutine(FOVRoutine());
+        StartCoroutine(FOVRoutine());
     }
 
     // Update is called once per frame
@@ -109,9 +113,12 @@ public class SwordEnemy : HitAble
 
         }
         UI.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
-     
+
+        float percent = Health / BaseHealth;
+        HealthImage.fillAmount = percent;
     }
 
+    
     void ResetNavMesh()
     {
         if (Agent.hasPath)
