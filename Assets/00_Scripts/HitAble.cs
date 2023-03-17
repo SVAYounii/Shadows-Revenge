@@ -4,12 +4,36 @@ using UnityEngine;
 
 public abstract class HitAble : MonoBehaviour, IHitAble
 {
-    public int Health;
-
-    public void Hit(int amount)
+    public float Health;
+    public float BaseHealth;
+    float _nextHit;
+    float _delay = 1f;
+    bool ready = true;
+    private void Awake()
     {
-        Health -= amount;
-        if (Health <= 0) Destroy(this.gameObject);
+        BaseHealth = Health;
+    }
+    public int Hit(int amount)
+    {
+        if (!ready)
+        {
+            _nextHit = Time.time + _delay;
+            ready = true;
+        }
+        else if (Time.time > _nextHit)
+        {
+
+            ready = false;
+
+            Health -= amount;
+            print("I got hit");
+            if (Health <= 0)
+            {
+                Destroy(this.gameObject);
+                return Random.Range(40, 80);
+            }
+        }
+        return 0;
 
     }
 }

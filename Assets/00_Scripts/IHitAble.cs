@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IHitAble
 {
-    void Hit(int amount);
+    int Hit(int amount);
 }
