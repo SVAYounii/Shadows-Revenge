@@ -40,7 +40,8 @@ public class Quest_01 : Mission
     // Start is called before the first frame update
     void Start()
     {
-
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         MissionTitle = "Reclaiming the village!";
         Checkpoint.Add(("Go to the village ", new Vector3(-8.88950729f, 0.154777199f, 281.208405f)));
