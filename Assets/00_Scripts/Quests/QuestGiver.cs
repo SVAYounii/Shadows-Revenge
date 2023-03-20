@@ -24,4 +24,11 @@ public class QuestGiver : MonoBehaviour
         QuestGoldText.text = quest.goldreward.ToString();
     }
 
+    public void AcceptQuest()
+    {
+        QuestWindow.SetActive(false);
+        quest.isActive = true;
+        player.Quest = quest;
+    }
+
 }
