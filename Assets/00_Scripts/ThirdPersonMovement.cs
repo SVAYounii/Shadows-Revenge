@@ -18,7 +18,9 @@ public class ThirdPersonMovement : MonoBehaviour
     public float CrouchSpeed = 1.5f;
     bool sprinting;
     bool _isCrouching;
-    private float trueSpeed;
+
+    [HideInInspector]
+    public float trueSpeed;
 
     public float jumpHeight = 2f;
     public float gravity = -4f;
@@ -96,9 +98,9 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 ReadyForAttacking = false;
                 anim.SetTrigger("IsAttacking");
-                StartCoroutine(StopWalking(_delayAttack));
             }
         }
+       
 
         anim.transform.localPosition = Vector3.zero;
         anim.transform.localEulerAngles = Vector3.zero;
