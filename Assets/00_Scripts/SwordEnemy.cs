@@ -112,13 +112,15 @@ public class SwordEnemy : HitAble
             animator.SetInteger("State", 0);
 
         }
-        UI.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
+
+        if (Camera.main is not null)
+            UI.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
 
         float percent = Health / BaseHealth;
         HealthImage.fillAmount = percent;
     }
 
-    
+
     void ResetNavMesh()
     {
         if (Agent.hasPath)
@@ -188,7 +190,7 @@ public class SwordEnemy : HitAble
 
         float dist = Agent.remainingDistance;
 
-        if (dist != Mathf.Infinity && Agent.pathStatus == NavMeshPathStatus.PathComplete && dist <= Agent.stoppingDistance +0.5f)
+        if (dist != Mathf.Infinity && Agent.pathStatus == NavMeshPathStatus.PathComplete && dist <= Agent.stoppingDistance + 0.5f)
         {
             return true;
 
