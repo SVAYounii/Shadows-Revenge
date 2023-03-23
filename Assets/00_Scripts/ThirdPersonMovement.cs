@@ -71,14 +71,12 @@ public class ThirdPersonMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            trueSpeed = CrouchSpeed;
             _isCrouching = true;
             anim.SetBool("IsSneaking", _isCrouching);
 
         }
         else if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            trueSpeed = walkSpeed;
             _isCrouching = false;
             anim.SetBool("IsSneaking", _isCrouching);
 
@@ -93,14 +91,14 @@ public class ThirdPersonMovement : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             print("Pressed");
-            
+
             if (Time.time > _nextTimeAttack)
             {
                 ReadyForAttacking = false;
                 anim.SetTrigger("IsAttacking");
             }
         }
-       
+
 
         anim.transform.localPosition = Vector3.zero;
         anim.transform.localEulerAngles = Vector3.zero;
@@ -120,7 +118,14 @@ public class ThirdPersonMovement : MonoBehaviour
             }
             else
             {
-                trueSpeed = walkSpeed;
+                if (_isCrouching)
+                {
+                    trueSpeed = CrouchSpeed;
+                }
+                else
+                {
+                    trueSpeed = walkSpeed;
+                }
                 anim.SetFloat("Speed", 1);
             }
 
