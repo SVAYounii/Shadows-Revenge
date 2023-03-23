@@ -30,7 +30,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public bool IsAttacking;
     bool ReadyForAttacking = true;
-    float _delayAttack = 1.2f;
+    float _delayAttack = 1.5f;
     float _nextTimeAttack;
     bool _ableToWalk = true;
     void Start()
@@ -61,12 +61,10 @@ public class ThirdPersonMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            trueSpeed = sprintSpeed;
             sprinting = true;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            trueSpeed = walkSpeed;
             sprinting = false;
 
         }
@@ -86,15 +84,17 @@ public class ThirdPersonMovement : MonoBehaviour
 
         }
 
+        if (!ReadyForAttacking)
+        {
+            _nextTimeAttack = Time.time + _delayAttack;
+            ReadyForAttacking = true;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             print("Pressed");
-            if (!ReadyForAttacking)
-            {
-                _nextTimeAttack = Time.time + _delayAttack;
-                ReadyForAttacking = true;
-            }
-            else if (Time.time > _nextTimeAttack)
+            
+            if (Time.time > _nextTimeAttack)
             {
                 ReadyForAttacking = false;
                 anim.SetTrigger("IsAttacking");
@@ -112,13 +112,15 @@ public class ThirdPersonMovement : MonoBehaviour
 
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             characterController.Move(moveDirection.normalized * trueSpeed * Time.deltaTime);
-            if (sprinting == true)
+            if (sprinting)
             {
+                trueSpeed = sprintSpeed;
                 anim.SetFloat("Speed", 2);
 
             }
             else
             {
+                trueSpeed = walkSpeed;
                 anim.SetFloat("Speed", 1);
             }
 

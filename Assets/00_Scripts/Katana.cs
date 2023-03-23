@@ -32,6 +32,7 @@ public class Katana : MonoBehaviour
             {
                 _hasAttacked = true;
                 nextTime = Time.time + (anim.GetCurrentAnimatorStateInfo(0).length / 2);
+
             }
             else if (nextTime > Time.time)
             {
@@ -50,7 +51,6 @@ public class Katana : MonoBehaviour
         if (_hasAttacked && !currAnimAttack)
         {
             _hasAttacked = false;
-            movement.trueSpeed = movement.walkSpeed;
         }
     }
 
