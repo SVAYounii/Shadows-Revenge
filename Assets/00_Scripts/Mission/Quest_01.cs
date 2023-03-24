@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class Quest_01 : Mission
 {
     GameObject Player;
+    public GameObject Master;
     public GameObject EnemiesList;
     ThirdPersonMovement movement;
 
@@ -24,7 +25,8 @@ public class Quest_01 : Mission
     public GameObject Canvas;
     int _amountOfEnemy;
 
-    public PlayableDirector _director;
+    public PlayableDirector _directorStart;
+    public PlayableDirector _directorVillage;
     public PlayableDirector _directorEnd;
 
     public Transform CameraPos_01End;
@@ -35,13 +37,18 @@ public class Quest_01 : Mission
     private void Awake()
     {
         //_director = GetComponent<PlayableDirector>();
-        _director.played += CutsceneHasStarted;
-        _director.stopped += CutsceneHasStopped;
+        _directorVillage.played += CutsceneHasStarted;
+        _directorVillage.stopped += CutsceneHasStopped;
 
         _directorEnd.played += CutsceneHasStarted;
         _directorEnd.stopped += CutsceneHasStopped;
 
+        _directorStart.played += CutsceneHasStarted;
+        _directorStart.stopped += CutsceneHasStopped;
+
         MainCamera = Camera.main;
+        Player = GameObject.FindGameObjectsWithTag("Player").FirstOrDefault();
+        movement = Player.GetComponent<ThirdPersonMovement>();
     }
 
 
@@ -52,6 +59,7 @@ public class Quest_01 : Mission
         Cursor.visible = false;
 
         MissionTitle = "Reclaiming the village!";
+        Checkpoint.Add(("Go to your Master ", Master.transform.position));
         Checkpoint.Add(("Go to the village ", new Vector3(55.2799988f, 0.200000003f, 358.619995f)));
         Checkpoint.Add(("", Vector3.zero));
         Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero));
@@ -59,8 +67,7 @@ public class Quest_01 : Mission
         CurrentCheckpoint = 0;
         MissionText.text = MissionTitle;
         _amountOfEnemy = EnemiesList.gameObject.transform.childCount;
-        Player = GameObject.FindGameObjectsWithTag("Player").FirstOrDefault();
-        movement = Player.GetComponent<ThirdPersonMovement>();
+
     }
 
     // Update is called once per frame
@@ -80,6 +87,16 @@ public class Quest_01 : Mission
         switch (CurrentCheckpoint)
         {
             case 0:
+                //if close to master start cutscene
+                if (dist < 3)
+                {
+                    StartCutscene(_directorStart);
+
+                }
+                ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1;
+                break;
+            case 1:
+                //if close to village start cutscene
                 if (dist < 3)
                 {
                     CurrentCheckpoint++;
@@ -87,20 +104,16 @@ public class Quest_01 : Mission
                 ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1;
 
                 break;
-            case 1:
+            case 2:
                 if (!_startCheckpoint)
                 {
                     _startCheckpoint = true;
-                    StartCutscene(_director);
-                    //StartCutsceneCamera(true);
-                    //CutsceneCamera.transform.position = Checkpoint[CurrentCheckpoint].Item2;
-                    //CutsceneCamera.transform.rotation = CameraPos_01End.rotation;
+                    StartCutscene(_directorVillage);
                 }
 
-                //Lerp(CutsceneCamera.transform.position, CameraPos_01End.position, CutsceneCamera.transform);
 
                 break;
-            case 2:
+            case 3:
                 if (!_startCheckpoint)
                 {
                     print("called");
@@ -118,7 +131,7 @@ public class Quest_01 : Mission
                 ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1 + "(" + killed.ToString() + "/" + _amountOfEnemy.ToString() + ")";
 
                 break;
-            case 3:
+            case 4:
                 ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1;
 
                 break;
