@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 446162}
   - component: {fileID: 3316930}
   - component: {fileID: 2314434}
-  - component: {fileID: 6471850}
+  - component: {fileID: 730696670675142238}
   m_Layer: 7
   m_Name: WoodenHouse3
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3316930
 MeshFilter:
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6471850
-MeshCollider:
+--- !u!65 &730696670675142238
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,7 +102,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 038e1d40bcc666e4695e6fbab4067229, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 7.660572, y: 6.472209, z: 9.391395}
+  m_Center: {x: 0, y: 3.2139297, z: 1.0903244}

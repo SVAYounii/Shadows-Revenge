@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class Quest_01 : Mission
@@ -23,16 +24,23 @@ public class Quest_01 : Mission
     public GameObject Canvas;
     int _amountOfEnemy;
 
-    private PlayableDirector _director;
+    public PlayableDirector _director;
+    public PlayableDirector _directorEnd;
+
     public Transform CameraPos_01End;
     float dist;
 
 
+
     private void Awake()
     {
-        _director = GetComponent<PlayableDirector>();
+        //_director = GetComponent<PlayableDirector>();
         _director.played += CutsceneHasStarted;
         _director.stopped += CutsceneHasStopped;
+
+        _directorEnd.played += CutsceneHasStarted;
+        _directorEnd.stopped += CutsceneHasStopped;
+
         MainCamera = Camera.main;
     }
 
@@ -44,8 +52,8 @@ public class Quest_01 : Mission
         Cursor.visible = false;
 
         MissionTitle = "Reclaiming the village!";
-        Checkpoint.Add(("Go to the village ", new Vector3(-8.88950729f, 0.154777199f, 281.208405f)));
-        Checkpoint.Add(("", new Vector3(8.45373821f, -1.23043537f, 304.839233f)));
+        Checkpoint.Add(("Go to the village ", new Vector3(55.2799988f, 0.200000003f, 358.619995f)));
+        Checkpoint.Add(("", Vector3.zero));
         Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero));
         Checkpoint.Add(("Return to the master ", Vector3.zero));
         CurrentCheckpoint = 0;
@@ -83,12 +91,13 @@ public class Quest_01 : Mission
                 if (!_startCheckpoint)
                 {
                     _startCheckpoint = true;
-                    StartCutsceneCamera(true);
-                    CutsceneCamera.transform.position = Checkpoint[CurrentCheckpoint].Item2;
-                    CutsceneCamera.transform.rotation = CameraPos_01End.rotation;
+                    StartCutscene(_director);
+                    //StartCutsceneCamera(true);
+                    //CutsceneCamera.transform.position = Checkpoint[CurrentCheckpoint].Item2;
+                    //CutsceneCamera.transform.rotation = CameraPos_01End.rotation;
                 }
 
-                Lerp(CutsceneCamera.transform.position, CameraPos_01End.position, CutsceneCamera.transform);
+                //Lerp(CutsceneCamera.transform.position, CameraPos_01End.position, CutsceneCamera.transform);
 
                 break;
             case 2:
@@ -96,14 +105,14 @@ public class Quest_01 : Mission
                 {
                     print("called");
                     _startCheckpoint = true;
-                    StartCutsceneCamera(false);
+                    //StartCutsceneCamera(false);
 
                 }
 
                 int killed = _amountOfEnemy - EnemiesList.gameObject.transform.childCount;
                 if (killed == _amountOfEnemy)
                 {
-                    StartCutscene();
+                    StartCutscene(_directorEnd);
 
                 }
                 ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1 + "(" + killed.ToString() + "/" + _amountOfEnemy.ToString() + ")";
@@ -135,10 +144,10 @@ public class Quest_01 : Mission
 
     }
 
-    void StartCutscene()
+    void StartCutscene(PlayableDirector timeline)
     {
 
-        _director.Play();
+        timeline.Play();
 
     }
     void LetPlayerMove()
