@@ -61,12 +61,8 @@ public class SwordEnemy : HitAble
         Player = GameObject.FindGameObjectWithTag("Player");
         animator = this.gameObject.GetComponent<Animator>();
         HealthImage = UI.GetComponent<Image>();
-        if (EnemyState == State.Roaming)
-        {
-            rnd = Random.Range(0, WalkPlaces.Count);
-            WalkTo(WalkPlaces[rnd]);
-
-        }
+        rnd = Random.Range(0, WalkPlaces.Count);
+        WalkTo(WalkPlaces[rnd]);
         StartCoroutine(FOVRoutine());
     }
 
