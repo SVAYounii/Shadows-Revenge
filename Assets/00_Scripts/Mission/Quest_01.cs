@@ -27,10 +27,12 @@ public class Quest_01 : Mission
 
     public PlayableDirector _directorStart;
     public PlayableDirector _directorVillage;
+    public PlayableDirector _directorVillageEnd;
     public PlayableDirector _directorEnd;
 
     public Transform CameraPos_01End;
     float dist;
+
 
 
 
@@ -45,6 +47,9 @@ public class Quest_01 : Mission
 
         _directorStart.played += CutsceneHasStarted;
         _directorStart.stopped += CutsceneHasStopped;
+
+        _directorVillageEnd.played += CutsceneHasStarted;
+        _directorVillageEnd.stopped += CutsceneHasStopped;
 
         MainCamera = Camera.main;
         Player = GameObject.FindGameObjectsWithTag("Player").FirstOrDefault();
@@ -63,8 +68,9 @@ public class Quest_01 : Mission
         Checkpoint.Add(("Go to the village ", new Vector3(55.2799988f, 0.200000003f, 358.619995f)));
         Checkpoint.Add(("", Vector3.zero));
         Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero));
-        Checkpoint.Add(("Return to the master ", Vector3.zero));
-        CurrentCheckpoint = 0;
+        Checkpoint.Add(("Return to the master ", Master.transform.position));
+        Checkpoint.Add(("", Vector3.zero));
+        CurrentCheckpoint = 5;
         MissionText.text = MissionTitle;
         _amountOfEnemy = EnemiesList.gameObject.transform.childCount;
 
@@ -125,15 +131,26 @@ public class Quest_01 : Mission
                 int killed = _amountOfEnemy - EnemiesList.gameObject.transform.childCount;
                 if (killed == _amountOfEnemy)
                 {
-                    StartCutscene(_directorEnd);
+                    StartCutscene(_directorVillageEnd);
 
                 }
                 ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1 + "(" + killed.ToString() + "/" + _amountOfEnemy.ToString() + ")";
 
                 break;
             case 4:
+                if (dist < 3)
+                {
+                    StartCutscene(_directorEnd);
+                }
                 ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1;
 
+                break;
+            case 5:
+                if(!_startCheckpoint)
+                {
+                    _startCheckpoint = false;
+                    NextMission("Mission_01", "Mission_02");
+                }
                 break;
         }
     }

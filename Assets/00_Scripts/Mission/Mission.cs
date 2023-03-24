@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Mission : MonoBehaviour
@@ -9,6 +10,7 @@ public abstract class Mission : MonoBehaviour
     protected int LastCheckpoint;
     public List<(string, Vector3)> Checkpoint = new List<(string, Vector3)>();
     public bool _startCheckpoint;
+    public bool Completed;
 
     private void Start()
     {
@@ -18,6 +20,11 @@ public abstract class Mission : MonoBehaviour
     private void Update()
     {
         
+    }
+
+    protected void NextMission(string currSceneName, string newSceneName)
+    {
+        GameObject.FindGameObjectsWithTag("QuestLoader").FirstOrDefault().GetComponent<QuestManager>().NextMission(currSceneName, newSceneName);
     }
 
    
