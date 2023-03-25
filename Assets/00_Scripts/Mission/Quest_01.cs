@@ -70,7 +70,7 @@ public class Quest_01 : Mission
         Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero));
         Checkpoint.Add(("Return to the master ", Master.transform.position));
         Checkpoint.Add(("", Vector3.zero));
-        CurrentCheckpoint = 5;
+        CurrentCheckpoint = 3;
         MissionText.text = MissionTitle;
         _amountOfEnemy = EnemiesList.gameObject.transform.childCount;
 
