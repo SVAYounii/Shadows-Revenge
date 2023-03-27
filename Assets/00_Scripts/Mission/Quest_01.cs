@@ -60,8 +60,7 @@ public class Quest_01 : Mission
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        
 
         MissionTitle = "Reclaiming the village!";
         Checkpoint.Add(("Go to your Master ", Master.transform.position));
@@ -161,25 +160,13 @@ public class Quest_01 : Mission
         LastCheckpoint = CurrentCheckpoint;
         _startCheckpoint = false;
     }
-    void Lerp(Vector3 curr, Vector3 end, Transform obj)
-    {
-        if (Vector3.Distance(obj.position, end) > 0.05f)
-        {
-            obj.position = Vector3.Slerp(curr, end, 0.01f);
-        }
-        else
-        {
-            CurrentCheckpoint++;
-        }
 
-    }
+    //void StartCutscene(PlayableDirector timeline)
+    //{
 
-    void StartCutscene(PlayableDirector timeline)
-    {
+    //    timeline.Play();
 
-        timeline.Play();
-
-    }
+    //}
     void LetPlayerMove()
     {
         movement.enabled = true;

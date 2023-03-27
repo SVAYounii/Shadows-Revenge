@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public abstract class Mission : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public abstract class Mission : MonoBehaviour
     private void Start()
     {
         LastCheckpoint = CurrentCheckpoint;
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -27,6 +30,11 @@ public abstract class Mission : MonoBehaviour
         GameObject.FindGameObjectsWithTag("QuestLoader").FirstOrDefault().GetComponent<QuestManager>().NextMission(currSceneName, newSceneName);
     }
 
-   
+    public void StartCutscene(PlayableDirector timeline)
+    {
+
+        timeline.Play();
+
+    }
 
 }
