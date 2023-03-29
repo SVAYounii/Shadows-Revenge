@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class HitAble : MonoBehaviour, IHitAble
 {
     public float Health;
     public float BaseHealth;
+    public Image HealthUI;
     float _nextHit;
     float _delay = 1f;
     bool ready = true;
+
     private void Awake()
     {
         BaseHealth = Health;
+
+        float percent = Health / BaseHealth;
+        HealthUI.fillAmount = percent;
     }
-    public int Hit(int amount)
+    public void Hit(int amount)
     {
         if (!ready)
         {
@@ -30,10 +34,12 @@ public abstract class HitAble : MonoBehaviour, IHitAble
             if (Health <= 0)
             {
                 Destroy(this.gameObject);
-                return Random.Range(40, 80);
             }
         }
-        return 0;
+
+        float percent = Health / BaseHealth;
+        HealthUI.fillAmount = percent;
+
 
     }
 }

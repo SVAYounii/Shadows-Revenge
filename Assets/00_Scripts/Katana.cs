@@ -6,10 +6,13 @@ using UnityEngine.Audio;
 public class Katana : MonoBehaviour
 {
     GameObject Player;
-    Animator anim;
+    public Animator anim;
     ThirdPersonMovement movement;
+
+    public string AttackAnimName;
     public Transform AttackPoint;
     public float AttackRange = 1f;
+    public int Damage;
     public LayerMask EnemyLayer;
     public AudioSource AudioSource;
     public AudioClip KatanaSound;
@@ -18,6 +21,7 @@ public class Katana : MonoBehaviour
     bool _hasAttacked = false;
     float nextTime;
     int hit = 0;
+    float divby = 3;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -25,22 +29,26 @@ public class Katana : MonoBehaviour
     }
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
-        anim = Player.GetComponentInChildren<Animator>();
-        movement = Player.GetComponent<ThirdPersonMovement>();
+        if (EnemyLayer.value != 512)
+        {
+
+            Player = GameObject.FindGameObjectWithTag("Player");
+            movement = Player.GetComponent<ThirdPersonMovement>();
+            divby = 2;
+        }
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        bool currAnimAttack = anim.GetCurrentAnimatorStateInfo(0).IsName("Sword And Shield Slash");
+        bool currAnimAttack = anim.GetCurrentAnimatorStateInfo(0).IsName(AttackAnimName);
         if (currAnimAttack)
         {
             if (!_hasAttacked)
             {
                 _hasAttacked = true;
-                nextTime = Time.time + (anim.GetCurrentAnimatorStateInfo(0).length / 2);
+                nextTime = Time.time + (anim.GetCurrentAnimatorStateInfo(0).length / divby);
                 AudioSource.PlayOneShot(KatanaSound, 0.5f);
             }
             else if (nextTime > Time.time && _hasAttacked)
@@ -49,11 +57,14 @@ public class Katana : MonoBehaviour
                 Collider[] enemies = Physics.OverlapSphere(AttackPoint.position, AttackRange, EnemyLayer);
                 foreach (var enemie in enemies)
                 {
-                    enemie.gameObject.GetComponent<IHitAble>().Hit(80);
+                    enemie.gameObject.GetComponent<IHitAble>().Hit(Damage);
                     if (hit == 0)
                         hit = 1;
                 }
-                movement.trueSpeed = movement.CrouchSpeed;
+
+                if (movement != null)
+                    movement.trueSpeed = movement.CrouchSpeed;
+
                 if (hit == 1)
                 {
                     hit = 2;

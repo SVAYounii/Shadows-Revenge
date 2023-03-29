@@ -279,7 +279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &497982
 Transform:
   m_ObjectHideFlags: 0
@@ -1650,10 +1650,10 @@ Animator:
   m_GameObject: {fileID: 136578}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4a5a8c8ff5d6d2e48ab8d2b27100cf57, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 184516510b0530248a520cd00bab52e8, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -1683,6 +1683,7 @@ MonoBehaviour:
   - {x: 66.98, y: 6.97, z: 67.96}
   - {x: 45.15, y: 0.44, z: 91.98}
   - {x: 37.33, y: -3.3, z: 107.51}
+  animator: {fileID: 9594444}
   StandingDelay: 10
 --- !u!195 &2246791883508645717
 NavMeshAgent:
@@ -3834,7 +3835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &424644
 Transform:
   m_ObjectHideFlags: 0

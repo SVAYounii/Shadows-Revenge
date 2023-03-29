@@ -10,10 +10,8 @@ using UnityEngine.UI;
 
 public class Quest_01 : Mission
 {
-    GameObject Player;
     public GameObject Master;
     public GameObject EnemiesList;
-    ThirdPersonMovement movement;
 
     public Camera CutsceneCamera;
     public GameObject FreeLookCamera;
@@ -69,7 +67,6 @@ public class Quest_01 : Mission
         Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero));
         Checkpoint.Add(("Return to the master ", Master.transform.position));
         Checkpoint.Add(("", Vector3.zero));
-        CurrentCheckpoint = 3;
         MissionText.text = MissionTitle;
         _amountOfEnemy = EnemiesList.gameObject.transform.childCount;
 
@@ -167,14 +164,7 @@ public class Quest_01 : Mission
     //    timeline.Play();
 
     //}
-    void LetPlayerMove()
-    {
-        movement.enabled = true;
-    }
-    void LetPlayerNotMove()
-    {
-        movement.enabled = false;
-    }
+   
     void StartCutsceneCamera(bool value)
     {
         MainCamera.gameObject.SetActive(!value);

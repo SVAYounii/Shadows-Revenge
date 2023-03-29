@@ -33,14 +33,14 @@ public class SwordEnemy : HitAble
 
     [Header("UI Settings")]
     public GameObject UI;
-    UnityEngine.UI.Image HealthImage;
 
     [HideInInspector]
     public GameObject Player;
 
     float _nextTime;
 
-    int _index = 0;
+    bool reset;
+
     bool _isWalking = false;
     bool _playerIsClose;
     bool _once;
@@ -55,19 +55,21 @@ public class SwordEnemy : HitAble
     }
 
     public State EnemyState;
+
+
     // Start is called before the first frame update
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
         animator = this.gameObject.GetComponent<Animator>();
-        HealthImage = UI.GetComponent<Image>();
-        rnd = Random.Range(0, WalkPlaces.Count);
-        WalkTo(WalkPlaces[rnd]);
+        // WalkTo(WalkPlaces[rnd]);
+        WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
+
         StartCoroutine(FOVRoutine());
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         switch (EnemyState)
         {
@@ -75,14 +77,15 @@ public class SwordEnemy : HitAble
                 if (canSeePlayer && HasWeapon)
                 {
                     EnemyState = State.Chasing;
-                    break;
+                    //break;
                 }
                 else if (canSeePlayer && !HasWeapon)
                 {
                     EnemyState = State.Fleeing;
                 }
-
-                Roaming();
+                //if (Agent.remainingDistance == 0)
+                //    Roaming();
+                Roam();
                 break;
             case State.Chasing:
                 Chase();
@@ -91,7 +94,6 @@ public class SwordEnemy : HitAble
                 Attacking();
                 break;
             case State.Fleeing:
-
                 Fleeing();
                 break;
         }
@@ -100,7 +102,6 @@ public class SwordEnemy : HitAble
         {
             Agent.isStopped = false;
             animator.SetInteger("State", 1);
-
         }
         else if (!_isWalking && EnemyState == State.Roaming)
         {
@@ -112,10 +113,17 @@ public class SwordEnemy : HitAble
         if (Camera.main is not null)
             UI.transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
 
-        float percent = Health / BaseHealth;
-        HealthImage.fillAmount = percent;
+
     }
 
+    private void Roam()
+    {
+        if (AgentHasArrived())
+        {
+            WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
+
+        }
+    }
 
     void ResetNavMesh()
     {
@@ -181,17 +189,14 @@ public class SwordEnemy : HitAble
 
     bool AgentHasArrived()
     {
-        if (!Agent.hasPath)
-            return true;
-
         float dist = Agent.remainingDistance;
 
-        if (dist != Mathf.Infinity && Agent.pathStatus == NavMeshPathStatus.PathComplete && dist <= Agent.stoppingDistance + 0.5f)
+        if (dist != 0 && dist > Agent.stoppingDistance + 0.5f)
         {
-            return true;
+            return false;
 
         }
-        return false;
+        return true;
     }
 
     void Attacking()
@@ -264,10 +269,9 @@ public class SwordEnemy : HitAble
                 _isWalking = false;
                 _nextTime = Time.time + StandingDelay;
             }
-            else if (Time.time > _nextTime)
+            else if (Time.time >= _nextTime)
             {
                 Debug.Log("Walk!");
-
                 StartWalking();
             }
         }

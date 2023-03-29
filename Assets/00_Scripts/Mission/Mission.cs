@@ -13,6 +13,11 @@ public abstract class Mission : MonoBehaviour
     public bool _startCheckpoint;
     public bool Completed;
 
+    public GameObject Player;
+    public ThirdPersonMovement movement;
+    private void Awake()
+    {
+    }
     private void Start()
     {
         LastCheckpoint = CurrentCheckpoint;
@@ -35,6 +40,15 @@ public abstract class Mission : MonoBehaviour
 
         timeline.Play();
 
+    }
+
+    public void LetPlayerMove()
+    {
+        movement.enabled = true;
+    }
+    public void LetPlayerNotMove()
+    {
+        movement.enabled = false;
     }
 
 }

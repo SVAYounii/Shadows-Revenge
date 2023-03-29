@@ -7,11 +7,10 @@ using UnityEngine.UI;
 
 public class Quest_02 : Mission
 {
-    GameObject Player;
     public GameObject EnemiesList;
-    ThirdPersonMovement movement;
 
     public Camera CutsceneCamera;
+    public GameObject NPCQuest;
     Camera MainCamera;
 
     public TextMeshProUGUI MissionText;
@@ -28,8 +27,7 @@ public class Quest_02 : Mission
     float dist;
     private void Awake()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
-        movement = Player.GetComponent<ThirdPersonMovement>();
+    
         MainCamera = Camera.main;
     }
 
@@ -41,9 +39,24 @@ public class Quest_02 : Mission
         Checkpoint.Add(("Go to the city of Tsumi", new Vector3(56.7843666f, 0.181999996f, 361.622803f)));
         Checkpoint.Add(("Go to the city of Tsumi", new Vector3(32.5900002f, 0.181999996f, 307.649994f)));
         Checkpoint.Add(("Go to the city of Tsumi", new Vector3(-10.9099998f, 2.000005f, 274.670013f)));
-        Checkpoint.Add(("Go to the city of Tsumi", new Vector3(12.4099998f, 3.53999996f, 203.789993f)));
+        Checkpoint.Add(("Go to the city of Tsumi", new Vector3(12.4099998f, 2.099996f, 203.789993f)));
+        Checkpoint.Add(("Find the guy that know more about the master", NPCQuest.transform.position));
 
         MissionText.text = MissionTitle;
+
+        Director01.played += CutsceneHasStarted;
+        Director01.stopped += CutsceneHasStopped;
+    }
+
+    private void CutsceneHasStopped(PlayableDirector obj)
+    {
+        LetPlayerMove();
+        CurrentCheckpoint++;
+    }
+
+    private void CutsceneHasStarted(PlayableDirector obj)
+    {
+        LetPlayerNotMove();
     }
 
     // Update is called once per frame
