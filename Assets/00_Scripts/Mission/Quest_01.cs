@@ -14,8 +14,6 @@ public class Quest_01 : Mission
     public GameObject EnemiesList;
 
     public Camera CutsceneCamera;
-    public GameObject FreeLookCamera;
-    Camera MainCamera;
 
     public TextMeshProUGUI MissionText;
     public TextMeshProUGUI ObjectiveText;
@@ -49,9 +47,7 @@ public class Quest_01 : Mission
         _directorVillageEnd.played += CutsceneHasStarted;
         _directorVillageEnd.stopped += CutsceneHasStopped;
 
-        MainCamera = Camera.main;
-        Player = GameObject.FindGameObjectsWithTag("Player").FirstOrDefault();
-        movement = Player.GetComponent<ThirdPersonMovement>();
+        
     }
 
 
@@ -165,12 +161,7 @@ public class Quest_01 : Mission
 
     //}
    
-    void StartCutsceneCamera(bool value)
-    {
-        MainCamera.gameObject.SetActive(!value);
-        FreeLookCamera.SetActive(!value);
-        CutsceneCamera.gameObject.SetActive(value);
-    }
+  
 
     private void CutsceneHasStopped(PlayableDirector obj)
     {
