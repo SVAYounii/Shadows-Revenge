@@ -2290,7 +2290,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 184516510b0530248a520cd00bab52e8, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2330,6 +2330,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ee16a9110280822418fb5e8d14d54c2c, type: 2}
   - {fileID: 2100000, guid: 10a2bbbbf9e6adc45a1587f10958525a, type: 2}
   StandingDelay: 5
+  AbleToWalk: 1
+  AbleToSee: 0
+  radius: 0
+  angle: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 0
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  canSeePlayer: 0
+  Player: {fileID: 0}
 --- !u!195 &8792502515696231509
 NavMeshAgent:
   m_ObjectHideFlags: 0

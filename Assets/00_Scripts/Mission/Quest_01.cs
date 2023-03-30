@@ -61,12 +61,12 @@ public class Quest_01 : Mission
         
 
         MissionTitle = "Reclaiming the village!";
-        Checkpoint.Add(("Go to your Master ", Master.transform.position));
-        Checkpoint.Add(("Go to the village ", new Vector3(55.2799988f, 0.200000003f, 358.619995f)));
-        Checkpoint.Add(("", Vector3.zero));
-        Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero));
-        Checkpoint.Add(("Return to the master ", Master.transform.position));
-        Checkpoint.Add(("", Vector3.zero));
+        Checkpoint.Add(("Go to your Master ", Master.transform.position,true));
+        Checkpoint.Add(("Go to the village ", new Vector3(55.2799988f, 0.200000003f, 358.619995f), true));
+        Checkpoint.Add(("", Vector3.zero, true));
+        Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero,true));
+        Checkpoint.Add(("Return to the master ", Master.transform.position, true));
+        Checkpoint.Add(("", Vector3.zero, true));
         MissionText.text = MissionTitle;
         _amountOfEnemy = EnemiesList.gameObject.transform.childCount;
 

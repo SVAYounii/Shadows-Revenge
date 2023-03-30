@@ -9,7 +9,7 @@ public abstract class Mission : MonoBehaviour
     public string MissionTitle;
     public int CurrentCheckpoint;
     protected int LastCheckpoint;
-    public List<(string, Vector3)> Checkpoint = new List<(string, Vector3)>();
+    public List<(string, Vector3,bool)> Checkpoint = new List<(string, Vector3, bool)>();
     public bool _startCheckpoint;
     public bool Completed;
 

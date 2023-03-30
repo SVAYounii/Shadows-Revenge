@@ -12,23 +12,47 @@ public class NPC : MonoBehaviour
     public List<string> NPCName = new List<string>();
     public List<Material> Materials = new List<Material>();
     public float StandingDelay;
+    public bool AbleToWalk = true;
+
+
+    [Header("Vision Settings")]
+    public bool AbleToSee;
+    
 
     bool _isWalking;
     float _nextTime;
     Transform Mesh;
 
+    [Header("Vision Settings")]
+    public float radius;
+    [Range(0, 180)]
+    public float angle;
+    public LayerMask targetMask;
+    public LayerMask obstructionMask;
+    public bool canSeePlayer;
+
+    [HideInInspector]
+    public GameObject Player;
+
     // Start is called before the first frame update
     void Start()
     {
         // StartWalking();
+        Player = GameObject.FindGameObjectWithTag("Player");
         Mesh = transform.Find(NPCName[Random.Range(0, NPCName.Count)]);
         Mesh.gameObject.SetActive(true);
         Mesh.gameObject.GetComponent<SkinnedMeshRenderer>().material = Materials[Random.Range(0, Materials.Count)];
+        if (AbleToSee)
+            StartCoroutine(FOVRoutine());
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!AbleToWalk)
+            return;
+
         Roaming();
         if (Agent.remainingDistance != 0 && Agent.remainingDistance > Agent.stoppingDistance + 0.5f)
         {
@@ -80,6 +104,41 @@ public class NPC : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public IEnumerator FOVRoutine()
+    {
+        WaitForSeconds wait = new WaitForSeconds(0.2f);
+
+        while (true)
+        {
+            yield return wait;
+            FieldOfViewCheck();
+        }
+    }
+    public void FieldOfViewCheck()
+    {
+        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
+
+        if (rangeChecks.Length != 0)
+        {
+            Transform target = rangeChecks[0].transform;
+            Vector3 directionToTarget = (target.position - transform.position).normalized;
+
+            if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
+            {
+                float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
+                    canSeePlayer = true;
+                else
+                    canSeePlayer = false;
+            }
+            else
+                canSeePlayer = false;
+        }
+        else if (canSeePlayer)
+            canSeePlayer = false;
     }
 
 }

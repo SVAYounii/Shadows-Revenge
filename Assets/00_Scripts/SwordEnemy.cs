@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
 
 public class SwordEnemy : HitAble
 {
@@ -283,7 +282,7 @@ public class SwordEnemy : HitAble
         WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
 
     }
-    private IEnumerator FOVRoutine()
+    public IEnumerator FOVRoutine()
     {
         WaitForSeconds wait = new WaitForSeconds(0.2f);
 
@@ -293,7 +292,7 @@ public class SwordEnemy : HitAble
             FieldOfViewCheck();
         }
     }
-    private void FieldOfViewCheck()
+    public void FieldOfViewCheck()
     {
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
 
