@@ -519,7 +519,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758759688032458248}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: e2f17bc5ace13de4fa904ce9441d339d, type: 3}
   m_Controller: {fileID: 9100000, guid: c2e564a8fe363e047916e95d2ae690fe, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -1614,7 +1614,7 @@ Transform:
   - {fileID: 4556789982738235246}
   - {fileID: 738708176}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4556789983879537933
 MonoBehaviour:
@@ -1674,8 +1674,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7b55e349de441d4db2bb491ae653d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 8111010972629719265}
+  AttackAnimName: 
   AttackPoint: {fileID: 196907624}
   AttackRange: 0.5
+  Damage: 0
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -1695,7 +1698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ears: {fileID: 738708175}
-  Camera: {fileID: 0}
 --- !u!82 &364903653
 AudioSource:
   m_ObjectHideFlags: 0

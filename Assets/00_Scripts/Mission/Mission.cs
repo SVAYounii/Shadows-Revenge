@@ -9,10 +9,15 @@ public abstract class Mission : MonoBehaviour
     public string MissionTitle;
     public int CurrentCheckpoint;
     protected int LastCheckpoint;
-    public List<(string, Vector3)> Checkpoint = new List<(string, Vector3)>();
+    public List<(string, Vector3,bool)> Checkpoint = new List<(string, Vector3, bool)>();
     public bool _startCheckpoint;
     public bool Completed;
 
+    public GameObject Player;
+    public ThirdPersonMovement movement;
+    private void Awake()
+    {
+    }
     private void Start()
     {
         LastCheckpoint = CurrentCheckpoint;
@@ -35,6 +40,15 @@ public abstract class Mission : MonoBehaviour
 
         timeline.Play();
 
+    }
+
+    public void LetPlayerMove()
+    {
+        movement.enabled = true;
+    }
+    public void LetPlayerNotMove()
+    {
+        movement.enabled = false;
     }
 
 }

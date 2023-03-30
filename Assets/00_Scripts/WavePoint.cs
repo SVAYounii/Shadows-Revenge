@@ -15,7 +15,7 @@ public class WavePoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Mission.Checkpoint[Mission.CurrentCheckpoint].Item2 != Vector3.zero)
+        if (Mission.Checkpoint[Mission.CurrentCheckpoint].Item2 != Vector3.zero && Mission.Checkpoint[Mission.CurrentCheckpoint].Item3)
         {
             Object.SetActive(true);
             Object.transform.position = Mission.Checkpoint[Mission.CurrentCheckpoint].Item2;

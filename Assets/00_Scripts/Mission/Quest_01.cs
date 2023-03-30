@@ -10,14 +10,10 @@ using UnityEngine.UI;
 
 public class Quest_01 : Mission
 {
-    GameObject Player;
     public GameObject Master;
     public GameObject EnemiesList;
-    ThirdPersonMovement movement;
 
     public Camera CutsceneCamera;
-    public GameObject FreeLookCamera;
-    Camera MainCamera;
 
     public TextMeshProUGUI MissionText;
     public TextMeshProUGUI ObjectiveText;
@@ -51,9 +47,7 @@ public class Quest_01 : Mission
         _directorVillageEnd.played += CutsceneHasStarted;
         _directorVillageEnd.stopped += CutsceneHasStopped;
 
-        MainCamera = Camera.main;
-        Player = GameObject.FindGameObjectsWithTag("Player").FirstOrDefault();
-        movement = Player.GetComponent<ThirdPersonMovement>();
+        
     }
 
 
@@ -63,13 +57,12 @@ public class Quest_01 : Mission
         
 
         MissionTitle = "Reclaiming the village!";
-        Checkpoint.Add(("Go to your Master ", Master.transform.position));
-        Checkpoint.Add(("Go to the village ", new Vector3(55.2799988f, 0.200000003f, 358.619995f)));
-        Checkpoint.Add(("", Vector3.zero));
-        Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero));
-        Checkpoint.Add(("Return to the master ", Master.transform.position));
-        Checkpoint.Add(("", Vector3.zero));
-        CurrentCheckpoint = 3;
+        Checkpoint.Add(("Go to your Master ", Master.transform.position,true));
+        Checkpoint.Add(("Go to the village ", new Vector3(55.2799988f, 0.200000003f, 358.619995f), true));
+        Checkpoint.Add(("", Vector3.zero, true));
+        Checkpoint.Add(("Kill the Enemies in the village ", Vector3.zero,true));
+        Checkpoint.Add(("Return to the master ", Master.transform.position, true));
+        Checkpoint.Add(("", Vector3.zero, true));
         MissionText.text = MissionTitle;
         _amountOfEnemy = EnemiesList.gameObject.transform.childCount;
 
@@ -167,20 +160,8 @@ public class Quest_01 : Mission
     //    timeline.Play();
 
     //}
-    void LetPlayerMove()
-    {
-        movement.enabled = true;
-    }
-    void LetPlayerNotMove()
-    {
-        movement.enabled = false;
-    }
-    void StartCutsceneCamera(bool value)
-    {
-        MainCamera.gameObject.SetActive(!value);
-        FreeLookCamera.SetActive(!value);
-        CutsceneCamera.gameObject.SetActive(value);
-    }
+   
+  
 
     private void CutsceneHasStopped(PlayableDirector obj)
     {

@@ -30,7 +30,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public bool IsAttacking;
     bool ReadyForAttacking = true;
-    float _delayAttack = 1.5f;
+    float _delayAttack = 1.7f;
     float _nextTimeAttack;
     bool _ableToWalk = true;
     void Start()
