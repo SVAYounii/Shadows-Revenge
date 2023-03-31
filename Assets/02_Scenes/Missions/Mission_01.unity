@@ -716,7 +716,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: bbd2f9985d98fa6468f9db9a273f2a31, type: 2}
-  m_InitialState: 0
+  m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -6410,7 +6410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MissionTitle: 
-  CurrentCheckpoint: 4
+  CurrentCheckpoint: 0
   _startCheckpoint: 0
   Completed: 0
   Player: {fileID: 73020716}
