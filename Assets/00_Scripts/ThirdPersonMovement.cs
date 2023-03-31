@@ -135,12 +135,12 @@ public class ThirdPersonMovement : MonoBehaviour
             anim.SetFloat("Speed", 0);
 
         }
-        //if (Input.GetButtonDown("Jump") && isGrounded)
-        //{
-        //    anim.SetBool("isJumping", true);
-        //    isJumping = true;
-        //    velocity.y = Mathf.Sqrt((jumpHeight * 10) * -2 * gravity);
-        //}
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+          anim.SetBool("isJumping", true);
+            isJumping = true;
+            velocity.y = Mathf.Sqrt((jumpHeight * 10) * -2 * gravity);
+        }
         if (!isGrounded)
         {
             isJumping = true;
