@@ -716,7 +716,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: bbd2f9985d98fa6468f9db9a273f2a31, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -4356,17 +4356,17 @@ PrefabInstance:
     - target: {fileID: 561847358303010991, guid: b24175a9d19143e41a922634e6d929c2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.067333564
+      value: 0.06733357
       objectReference: {fileID: 0}
     - target: {fileID: 561847358303010991, guid: b24175a9d19143e41a922634e6d929c2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000004291833
+      value: -0.0000000042918336
       objectReference: {fileID: 0}
     - target: {fileID: 561847358303010991, guid: b24175a9d19143e41a922634e6d929c2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -2.8964176e-10
+      value: 2.8964178e-10
       objectReference: {fileID: 0}
     - target: {fileID: 561847358385406567, guid: b24175a9d19143e41a922634e6d929c2,
         type: 3}
