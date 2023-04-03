@@ -34,7 +34,7 @@ public class ThirdPersonMovement : MonoBehaviour
     float _nextTimeAttack;
     bool _ableToWalk = true;
 
-    private SneakAbility sneakAbility;
+    public SneakAbility sneakAbility;
     void Start()
     {
         trueSpeed = walkSpeed;

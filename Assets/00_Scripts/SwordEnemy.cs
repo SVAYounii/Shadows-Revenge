@@ -306,15 +306,31 @@ public class SwordEnemy : HitAble
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
-                    canSeePlayer = true;
+                {
+                    ThirdPersonMovement tpm = target.GetComponent<ThirdPersonMovement>();
+                    if (tpm != null && tpm.sneakAbility != null && tpm.sneakAbility.isSneaking)
+                    {
+                        canSeePlayer = false; // Player is sneaking, don't allow SwordEnemy to see them
+                    }
+                    else
+                    {
+                        canSeePlayer = true; // Player is not sneaking, allow SwordEnemy to see them
+                    }
+                }
                 else
+                {
                     canSeePlayer = false;
+                }
             }
             else
+            {
                 canSeePlayer = false;
+            }
         }
         else if (canSeePlayer)
+        {
             canSeePlayer = false;
+        }
     }
 
 }
