@@ -33,6 +33,8 @@ public class ThirdPersonMovement : MonoBehaviour
     float _delayAttack = 1.7f;
     float _nextTimeAttack;
     bool _ableToWalk = true;
+
+    private SneakAbility sneakAbility;
     void Start()
     {
         trueSpeed = walkSpeed;
@@ -40,6 +42,7 @@ public class ThirdPersonMovement : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         characterController = GetComponent<CharacterController>();
+        sneakAbility = GetComponentInChildren<SneakAbility>();
     }
 
     // Update is called once per frame
@@ -99,6 +102,13 @@ public class ThirdPersonMovement : MonoBehaviour
             }
         }
 
+        // Use sneak ability if available
+        // Use sneak ability if available
+        if (!_isCrouching && sneakAbility != null && !sneakAbility.isSneaking)
+        {
+            sneakAbility.Update();
+        }
+
 
         anim.transform.localPosition = Vector3.zero;
         anim.transform.localEulerAngles = Vector3.zero;
@@ -120,13 +130,15 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 if (_isCrouching)
                 {
-                    trueSpeed = CrouchSpeed;
+
+                    SetSneakSpeed();
+                    
                 }
                 else
                 {
-                    trueSpeed = walkSpeed;
+                    ResetSpeed();
                 }
-                anim.SetFloat("Speed", 1);
+                
             }
 
         }
@@ -160,6 +172,23 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
         characterController.Move(velocity * Time.deltaTime);
+    }
+
+    public void SetSneakSpeed()
+    {
+        trueSpeed = CrouchSpeed;
+    }
+
+    public void ResetSpeed()
+    {
+        trueSpeed = walkSpeed;
+        anim.SetFloat("Speed", 1f);
+    }
+
+    public void SetCrouch(bool isCrouching)
+    {
+        _isCrouching = isCrouching;
+        anim.SetBool("IsSneaking", isCrouching);
     }
 
     IEnumerator StopWalking(float amount)
