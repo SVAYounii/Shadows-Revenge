@@ -11,10 +11,13 @@ public class SneakAbility : MonoBehaviour
     private float cooldown = 20f;
     private bool isCooldown = false;
     private float nextTimeAvailable = 0f;
+    [SerializeField] private Material sneakingMaterial;
+    private Material playerMaterial;
 
     void Start()
     {
         tpm = GetComponent<ThirdPersonMovement>();
+        playerMaterial = GetComponentInChildren<Renderer>().material;
     }
 
    public void Update()
@@ -33,6 +36,12 @@ public class SneakAbility : MonoBehaviour
 
     IEnumerator ActivateSneakAbility()
     {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material = sneakingMaterial;
+        }
+
         tpm.SetSneakSpeed();
         tpm.SetCrouch(true);
         Debug.Log("Sneak ability has been activated for " + duration + " seconds.");
@@ -43,6 +52,11 @@ public class SneakAbility : MonoBehaviour
 
         isSneaking = false;
         Debug.Log("Sneak ability is off.");
+        // Revert player's material to the original material
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material = playerMaterial;
+        }
 
         yield return new WaitForSeconds(0.5f); // Wait for a short delay to avoid any movement bugs
 
