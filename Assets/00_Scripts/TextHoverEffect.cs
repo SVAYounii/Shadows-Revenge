@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,14 +8,14 @@ public class TextHoverEffect : MonoBehaviour
 
     public Image backgroundImage;
 
-    private TextMeshProUGUI textComponent;
+    private Text textComponent;
     private Color originalTextColor;
     private Color highlightTextColor = Color.black;
 
     // Start is called before the first frame update
     void Start()
     {
-        textComponent = GetComponent<TextMeshProUGUI>();
+        textComponent = GetComponent<Text>();
         originalTextColor = textComponent.color;
     }
 
