@@ -37,8 +37,8 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         trueSpeed = walkSpeed;
         anim = GetComponentInChildren<Animator>();
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
         characterController = GetComponent<CharacterController>();
     }
 

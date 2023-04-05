@@ -10,7 +10,6 @@ public class Quest_02 : Mission
 {
     public GameObject EnemiesList;
 
-    public Camera CutsceneCamera;
     public GameObject NPCQuest;
 
     public GameObject MissionFailed;
@@ -18,8 +17,6 @@ public class Quest_02 : Mission
     public TextMeshProUGUI MissionText;
     public TextMeshProUGUI ObjectiveText;
     public TextMeshProUGUI PressFText;
-    public Image Fade;
-    public GameObject Canvas;
     public NPC Enemy;
     public NPC Enemy1;
     public PlayableDirector Director01;
