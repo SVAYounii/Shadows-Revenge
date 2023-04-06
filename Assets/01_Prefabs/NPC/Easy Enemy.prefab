@@ -2244,11 +2244,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430768}
+  - component: {fileID: 5571229657838105558}
   - component: {fileID: 9515162}
   - component: {fileID: 8792502515696231509}
   - component: {fileID: 1391139325939813266}
   - component: {fileID: 3967606606134365157}
-  - component: {fileID: 5571229657838105558}
   - component: {fileID: -6665560489023781243}
   - component: {fileID: 2975060225962557211}
   m_Layer: 8
@@ -2280,8 +2280,50 @@ Transform:
   - {fileID: 431914}
   - {fileID: 2218930936770093687}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5571229657838105558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f908d3e33e7364b4eac52d1e7aa78f8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 100
+  BaseHealth: 0
+  HealthUI: {fileID: 151064781831925997}
+  WalkPlaces:
+  - {x: 54.7, y: -2.129325, z: 331.65}
+  - {x: 37.54, y: -1.47, z: 326.72}
+  - {x: 47.42, y: -1.47, z: 319.68}
+  - {x: 35.73, y: -1.77, z: 314.71}
+  - {x: 47.84, y: -1.42, z: 307.56}
+  - {x: 43.8, y: -2.42, z: 298.51}
+  - {x: 18.05, y: -3.05, z: 297.72}
+  - {x: 10.37, y: -2.468, z: 308.5}
+  - {x: 22.4, y: -2.263, z: 315.2}
+  Agent: {fileID: 8792502515696231509}
+  StandingDelay: 5
+  AttackDistance: 1
+  HasWeapon: 1
+  radius: 12
+  angle: 120
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 512
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 128
+  canSeePlayer: 0
+  UI: {fileID: 7203163476809496833}
+  Player: {fileID: 0}
+  rnd: 0
+  EnemyState: 0
 --- !u!95 &9515162
 Animator:
   serializedVersion: 5
@@ -2372,49 +2414,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.9019417, z: 1}
   m_Center: {x: 0, y: 0.9450391, z: 0}
---- !u!114 &5571229657838105558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 165386}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f908d3e33e7364b4eac52d1e7aa78f8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 100
-  BaseHealth: 0
-  HealthUI: {fileID: 151064781831925997}
-  WalkPlaces:
-  - {x: 29.78, y: -3.0703335, z: 299.18}
-  - {x: 7.63, y: -2.35, z: 292.43}
-  - {x: 19.562, y: -2.995, z: 293.307}
-  - {x: 10.35, y: -2.312, z: 308.45}
-  - {x: 23.9, y: -2.256, z: 319.15}
-  - {x: 31.5, y: -2.16, z: 312.97}
-  - {x: 43.48, y: -1.56, z: 311.9}
-  - {x: 47.899, y: -1.56, z: 303.546}
-  - {x: 47.306, y: -1.472, z: 307.389}
-  - {x: 44.98, y: -2.98, z: 299.44}
-  Agent: {fileID: 8792502515696231509}
-  StandingDelay: 5
-  AttackDistance: 1
-  HasWeapon: 1
-  radius: 12
-  angle: 120
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 512
-  obstructionMask:
-    serializedVersion: 2
-    m_Bits: 128
-  canSeePlayer: 0
-  UI: {fileID: 7203163476809496833}
-  Player: {fileID: 0}
-  rnd: 0
-  EnemyState: 0
 --- !u!114 &-6665560489023781243
 MonoBehaviour:
   m_ObjectHideFlags: 0
