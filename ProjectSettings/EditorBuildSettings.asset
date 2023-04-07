@@ -5,13 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/02_Scenes/Main.unity
     guid: e03b3346e0850b14eb8baa76a7b654b2
-  - enabled: 1
+  - enabled: 0
     path: Assets/02_Scenes/Missions/Mission_01.unity
     guid: b812291dbb0ed2d49bc66d546c28caa2
-  - enabled: 1
+  - enabled: 0
     path: Assets/02_Scenes/Missions/Mission_02.unity
     guid: 4e6f92e53c57a344eb53046673fb8e6a
+  - enabled: 1
+    path: Assets/02_Scenes/Hazam.unity
+    guid: 0bafe7169f95bb74b95873dbe28daa82
   m_configObjects: {}
