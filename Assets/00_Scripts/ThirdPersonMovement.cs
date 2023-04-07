@@ -16,10 +16,10 @@ public class ThirdPersonMovement : MonoBehaviour
     public float walkSpeed = 3f;
     public float sprintSpeed = 5f;
     public float CrouchSpeed = 1.5f;
-    bool sprinting;
-    bool _isCrouching;
+    public bool sprinting;
+    public bool _isCrouching;
 
-    [HideInInspector]
+   
     public float trueSpeed;
 
     public float jumpHeight = 2f;
@@ -133,7 +133,7 @@ public class ThirdPersonMovement : MonoBehaviour
         else
         {
             anim.SetFloat("Speed", 0);
-
+            trueSpeed = 0;
         }
         //if (Input.GetButtonDown("Jump") && isGrounded)
         //{
