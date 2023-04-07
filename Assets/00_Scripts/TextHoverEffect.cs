@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -13,7 +12,7 @@ public class TextHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public UnityEngine.Events.UnityEvent onClick;
     
 
-    private TextMeshProUGUI textComponent;
+    private Text textComponent;
     private Color originalTextColor;
     private Color highlightTextColor = Color.black;
     private bool isHovering;
@@ -22,7 +21,7 @@ public class TextHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExit
     // Start is called before the first frame update
     void Start()
     {
-        textComponent = GetComponent<TextMeshProUGUI>();
+        textComponent = GetComponent<Text>();
         originalTextColor = textComponent.color;
     }
 
