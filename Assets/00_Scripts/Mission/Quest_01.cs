@@ -16,6 +16,8 @@ public class Quest_01 : Mission
 
     public Camera CutsceneCamera;
 
+    public GameObject MissionFailed;
+    Image MissionFailedImage;
     public TextMeshProUGUI MissionText;
     public TextMeshProUGUI ObjectiveText;
     public Image Fade;
@@ -30,10 +32,17 @@ public class Quest_01 : Mission
     public Transform CameraPos_01End;
     float dist;
 
+    PlayerInfo PlayerInfo;
 
     public List<Vector3> SpawnPoint = new List<Vector3>();
     public GameObject Enemy;
     public Transform Parent;
+
+    private float fixedDeltaTime;
+
+    bool _missionFailed;
+
+    float _nextTime;
 
     private void Awake()
     {
@@ -70,6 +79,8 @@ public class Quest_01 : Mission
         Checkpoint.Add(("Return to the master ", Master.transform.position, true));
         Checkpoint.Add(("", Vector3.zero, true));
         MissionText.text = MissionTitle;
+        PlayerInfo = Player.GetComponent<PlayerInfo>();
+        MissionFailedImage = MissionFailed.GetComponent<Image>();
 
     }
 
@@ -86,6 +97,10 @@ public class Quest_01 : Mission
             NextCheckpoint();
         }
 
+        if (_missionFailed)
+        {
+            Failed();
+        }
 
         switch (CurrentCheckpoint)
         {
@@ -153,14 +168,18 @@ public class Quest_01 : Mission
                     _amountOfEnemy = EnemiesList.gameObject.transform.childCount;
 
                 }
-
+                if (PlayerInfo.Health <= 0 && !_missionFailed)
+                {
+                    _nextTime = Time.time + 2.5f;
+                    _missionFailed = true;
+                }
                 int killed = _amountOfEnemy - EnemiesList.gameObject.transform.childCount;
                 if (killed == _amountOfEnemy)
                 {
                     StartCutscene(_directorVillageEnd);
 
                 }
-                ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1 + "(" + killed.ToString() + "/" + _amountOfEnemy.ToString() + ")";
+                ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1 + " (" + killed.ToString() + "/" + _amountOfEnemy.ToString() + ")";
 
                 break;
             case 7:
@@ -188,7 +207,50 @@ public class Quest_01 : Mission
                 break;
         }
     }
+    void Failed()
+    {
+        MissionFailed.SetActive(true);
+        Time.timeScale = 0.5f;
+        Time.fixedDeltaTime = 0.02F * Time.timeScale;
 
+        var tempColor = MissionFailedImage.color;
+        if (tempColor.a < 1)
+        {
+            tempColor.a += Time.deltaTime * 0.5f;
+            MissionFailedImage.color = tempColor;
+        }
+
+        if (Time.time > _nextTime)
+        {
+            ResetMission();
+        }
+    }
+    void ResetMission()
+    {
+        MissionFailed.SetActive(false);
+
+        Player.GetComponent<CharacterController>().enabled = false;
+        Player.GetComponent<ThirdPersonMovement>().enabled = false;
+        Player.transform.position = Checkpoint[4].Item2;
+        Player.GetComponent<CharacterController>().enabled = true;
+        Player.GetComponent<ThirdPersonMovement>().enabled = true;
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02F;
+
+        var tempColor = MissionFailedImage.color;
+        tempColor.a = 0;
+        MissionFailedImage.color = tempColor;
+        _missionFailed = false;
+        PlayerInfo.Health = PlayerInfo.BaseHealth;
+        PlayerInfo.IsDead = false;
+        LastCheckpoint = CurrentCheckpoint;
+        for (int i = 0; i < Parent.transform.childCount; i++)
+        {
+            Parent.transform.GetChild(i).gameObject.GetComponent<SwordEnemy>().EnemyState = SwordEnemy.State.Roaming;
+            Parent.transform.GetChild(i).gameObject.GetComponent<SwordEnemy>().canSeePlayer = false;
+        }
+
+    }
 
     void NextCheckpoint()
     {

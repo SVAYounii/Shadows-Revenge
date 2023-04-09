@@ -9,6 +9,7 @@ public abstract class HitAble : MonoBehaviour, IHitAble
     float _nextHit;
     float _delay = 1f;
     bool ready = true;
+    public bool IsDead;
 
     private void Awake()
     {
@@ -33,7 +34,11 @@ public abstract class HitAble : MonoBehaviour, IHitAble
             print("I got hit");
             if (Health <= 0)
             {
-                Destroy(this.gameObject);
+                if (this.gameObject.tag != "Player")
+                {
+
+                    Destroy(this.gameObject);
+                }
             }
         }
 

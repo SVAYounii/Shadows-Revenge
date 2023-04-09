@@ -82,8 +82,8 @@ public class StartCutscene : MonoBehaviour
     }
     void RotateEachOther()
     {
-                    Player.transform.LookAt(Sensei.transform);
-                    Sensei.transform.LookAt(Player.transform);
+        Player.transform.LookAt(Sensei.transform);
+        Sensei.transform.LookAt(Player.transform);
 
     }
 
