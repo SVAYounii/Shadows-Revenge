@@ -37,8 +37,11 @@ public abstract class HitAble : MonoBehaviour, IHitAble
             }
         }
 
-        float percent = Health / BaseHealth;
-        HealthUI.fillAmount = percent;
+        if (HealthUI != null)
+        {
+            float percent = Health / BaseHealth;
+            HealthUI.fillAmount = percent;
+        }
 
 
     }

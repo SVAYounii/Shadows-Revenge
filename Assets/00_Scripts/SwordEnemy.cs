@@ -54,13 +54,14 @@ public class SwordEnemy : HitAble
     }
 
     public State EnemyState;
-
+    ThirdPersonMovement tpm;
 
     // Start is called before the first frame update
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
         animator = this.gameObject.GetComponent<Animator>();
+        tpm = Player.GetComponent<ThirdPersonMovement>();
         // WalkTo(WalkPlaces[rnd]);
         WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
 
@@ -117,6 +118,8 @@ public class SwordEnemy : HitAble
 
     private void Roam()
     {
+        Agent.speed = 1.5f;
+
         if (AgentHasArrived())
         {
             WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
@@ -181,6 +184,8 @@ public class SwordEnemy : HitAble
     void WalkTo(Vector3 pos)
     {
         _isWalking = true;
+        Agent.speed = 1.5f;
+
         Agent.isStopped = false;
         animator.SetInteger("State", 1);
         Agent.SetDestination(pos);
@@ -227,6 +232,12 @@ public class SwordEnemy : HitAble
 
         float dist = Vector3.Distance(this.transform.position, Player.transform.position);
 
+        if (tpm.sneakAbility.isSneaking)
+        {
+            // Player is sneaking, don't attack
+            EnemyState = State.Roaming;
+            return;
+        }
         if (dist > Agent.stoppingDistance)
         {
             animator.SetInteger("State", 2);
@@ -289,7 +300,8 @@ public class SwordEnemy : HitAble
         while (true)
         {
             yield return wait;
-            FieldOfViewCheck();
+            if (!tpm.sneakAbility.isSneaking)
+                FieldOfViewCheck();
         }
     }
     public void FieldOfViewCheck()
@@ -313,8 +325,11 @@ public class SwordEnemy : HitAble
             else
                 canSeePlayer = false;
         }
-        else if (canSeePlayer)
+        else
+        {
+            EnemyState = State.Roaming;
             canSeePlayer = false;
+        }
     }
 
 }
