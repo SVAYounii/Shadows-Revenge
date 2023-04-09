@@ -82,6 +82,8 @@ public class Quest_02 : Mission
 
     private void CutsceneHasStarted(PlayableDirector obj)
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
         LetPlayerNotMove();
     }
 
@@ -239,7 +241,7 @@ public class Quest_02 : Mission
         Player.GetComponent<CharacterController>().enabled = true;
         Player.GetComponent<ThirdPersonMovement>().enabled = true;
         Time.timeScale = 1f;
-        Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
+        Time.fixedDeltaTime = 0.02F;
         DragonBreath.SetActive(true);
 
         var tempColor = MissionFailedImage.color;

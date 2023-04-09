@@ -21,8 +21,6 @@ public abstract class Mission : MonoBehaviour
     private void Start()
     {
         LastCheckpoint = CurrentCheckpoint;
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
     }
 
     private void Update()
