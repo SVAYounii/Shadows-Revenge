@@ -33,6 +33,8 @@ public class ThirdPersonMovement : MonoBehaviour
     float _delayAttack = 1.7f;
     float _nextTimeAttack;
     bool _ableToWalk = true;
+
+    public SneakAbility sneakAbility;
     void Start()
     {
         trueSpeed = walkSpeed;
@@ -40,6 +42,7 @@ public class ThirdPersonMovement : MonoBehaviour
         //Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;
         characterController = GetComponent<CharacterController>();
+        sneakAbility = GetComponentInChildren<SneakAbility>();
     }
 
     // Update is called once per frame
@@ -47,6 +50,23 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         // Raycast to check if the character is on the ground
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.2f);
+
+        if (!_isCrouching && sneakAbility != null && !sneakAbility.isSneaking)
+        {
+            sneakAbility.Update();
+        }
+        if (sneakAbility.isSneaking)
+        {
+            sprinting = false;
+            _isCrouching = false;
+            CrouchSpeed = walkSpeed;
+
+        }
+        // Disable sprinting while sneaking
+        if (_isCrouching)
+        {
+            sprinting = false;
+        }
 
         // Set the "IsGrounded" parameter in the Animator
         anim.SetBool("isGrounded", isGrounded);
@@ -69,97 +89,127 @@ public class ThirdPersonMovement : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+
+        if (!sneakAbility.isSneaking)
         {
-            _isCrouching = true;
-            anim.SetBool("IsSneaking", _isCrouching);
-
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            _isCrouching = false;
-            anim.SetBool("IsSneaking", _isCrouching);
-
-        }
-
-        if (!ReadyForAttacking)
-        {
-            _nextTimeAttack = Time.time + _delayAttack;
-            ReadyForAttacking = true;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            print("Pressed");
-
-            if (Time.time > _nextTimeAttack)
+            if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                ReadyForAttacking = false;
-                anim.SetTrigger("IsAttacking");
+                _isCrouching = true;
+                anim.SetBool("IsSneaking", _isCrouching);
+
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftControl))
+            {
+                _isCrouching = false;
+                anim.SetBool("IsSneaking", _isCrouching);
+
             }
         }
 
 
-        anim.transform.localPosition = Vector3.zero;
-        anim.transform.localEulerAngles = Vector3.zero;
-        if (direction.magnitude >= 0.1f && _ableToWalk)
-        {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            characterController.Move(moveDirection.normalized * trueSpeed * Time.deltaTime);
-            if (sprinting)
+            if (!ReadyForAttacking)
             {
-                trueSpeed = sprintSpeed;
-                anim.SetFloat("Speed", 2);
+                _nextTimeAttack = Time.time + _delayAttack;
+                ReadyForAttacking = true;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                print("Pressed");
+
+                if (Time.time > _nextTimeAttack)
+                {
+                    ReadyForAttacking = false;
+                    anim.SetTrigger("IsAttacking");
+                }
+            }
+
+            // Use sneak ability if available
+            if (!_isCrouching && sneakAbility != null && !sneakAbility.isSneaking)
+            {
+                sneakAbility.Update();
+            }
+
+
+            anim.transform.localPosition = Vector3.zero;
+            anim.transform.localEulerAngles = Vector3.zero;
+            if (direction.magnitude >= 0.1f && _ableToWalk)
+            {
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+                Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                characterController.Move(moveDirection.normalized * trueSpeed * Time.deltaTime);
+                if (sprinting)
+                {
+                    trueSpeed = sprintSpeed;
+                    anim.SetFloat("Speed", 2);
+
+                }
+                else
+                {
+                    if (_isCrouching)
+                    {
+
+                        SetSneakSpeed();
+
+                    }
+                    else
+                    {
+                        ResetSpeed();
+                    }
+
+                }
 
             }
             else
             {
-                if (_isCrouching)
-                {
-                    trueSpeed = CrouchSpeed;
-                }
-                else
-                {
-                    trueSpeed = walkSpeed;
-                }
-                anim.SetFloat("Speed", 1);
+                anim.SetFloat("Speed", 0);
+
             }
-
-        }
-        else
-        {
-            anim.SetFloat("Speed", 0);
-
-        }
-        //if (Input.GetButtonDown("Jump") && isGrounded)
-        //{
-        //    anim.SetBool("isJumping", true);
-        //    isJumping = true;
-        //    velocity.y = Mathf.Sqrt((jumpHeight * 10) * -2 * gravity);
-        //}
-        if (!isGrounded)
-        {
-            isJumping = true;
-        }
-        if (velocity.y > -20)
-        {
-            velocity.y += (gravity * 10) * Time.deltaTime;
-
-        }
-        else
-        {
-            if (isJumping)
+            //if (Input.GetButtonDown("Jump") && isGrounded)
+            //{
+            //    anim.SetBool("isJumping", true);
+            //    isJumping = true;
+            //    velocity.y = Mathf.Sqrt((jumpHeight * 10) * -2 * gravity);
+            //}
+            if (!isGrounded)
             {
-                anim.SetBool("isJumping", false);
-                isJumping = false;
+                isJumping = true;
             }
+            if (velocity.y > -20)
+            {
+                velocity.y += (gravity * 10) * Time.deltaTime;
+
+            }
+            else
+            {
+                if (isJumping)
+                {
+                    anim.SetBool("isJumping", false);
+                    isJumping = false;
+                }
+            }
+
+            characterController.Move(velocity * Time.deltaTime);
         }
 
-        characterController.Move(velocity * Time.deltaTime);
+    public void SetSneakSpeed()
+    {
+        trueSpeed = CrouchSpeed;
+    }
+
+    public void ResetSpeed()
+    {
+        trueSpeed = walkSpeed;
+        anim.SetFloat("Speed", 1f);
+    }
+
+    public void SetCrouch(bool isCrouching)
+    {
+        _isCrouching = isCrouching;
+        anim.SetBool("IsSneaking", isCrouching);
     }
 
     IEnumerator StopWalking(float amount)
