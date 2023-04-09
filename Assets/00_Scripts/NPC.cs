@@ -34,6 +34,9 @@ public class NPC : MonoBehaviour
     [HideInInspector]
     public GameObject Player;
 
+    ThirdPersonMovement tpm;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +45,8 @@ public class NPC : MonoBehaviour
         Mesh = transform.Find(NPCName[Random.Range(0, NPCName.Count)]);
         Mesh.gameObject.SetActive(true);
         Mesh.gameObject.GetComponent<SkinnedMeshRenderer>().material = Materials[Random.Range(0, Materials.Count)];
+        tpm = Player.GetComponent<ThirdPersonMovement>();
+
         if (AbleToSee)
             StartCoroutine(FOVRoutine());
 
@@ -113,7 +118,8 @@ public class NPC : MonoBehaviour
         while (true)
         {
             yield return wait;
-            FieldOfViewCheck();
+            if (!tpm.sneakAbility.isSneaking)
+                FieldOfViewCheck();
         }
     }
     public void FieldOfViewCheck()

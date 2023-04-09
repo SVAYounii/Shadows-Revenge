@@ -2018,6 +2018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2126719882877294433}
   - component: {fileID: 3930061445467475437}
+  - component: {fileID: 8680497481243700332}
   - component: {fileID: 1789082581880604268}
   - component: {fileID: 3459322739595890560}
   - component: {fileID: 2996858852191981454}
@@ -2066,6 +2067,22 @@ MonoBehaviour:
   jumpHeight: 2
   gravity: -4
   IsAttacking: 0
+  sneakAbility: {fileID: 8680497481243700332}
+--- !u!114 &8680497481243700332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126719882877591119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ebeb1eb3c1ae1b4c9d7baf955f1a62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSneaking: 0
+  NotAvailbleImage: {fileID: 0}
+  sneakingMaterial: {fileID: 2100000, guid: ffaac1230d5d284468a3e5ed15443b39, type: 2}
 --- !u!143 &1789082581880604268
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2239,6 +2256,8 @@ MonoBehaviour:
   Health: 100
   BaseHealth: 0
   HealthUI: {fileID: 0}
+  IsDead: 0
+  PlayerAnim: {fileID: 7662670314170091244}
 --- !u!1 &2126719882877593529
 GameObject:
   m_ObjectHideFlags: 0
