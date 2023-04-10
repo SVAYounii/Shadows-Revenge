@@ -12,6 +12,10 @@ public class SwordEnemy : HitAble
     public List<Vector3> WalkPlaces = new List<Vector3>();
     public NavMeshAgent Agent;
     public float StandingDelay = 5;
+    [SerializeField]
+    private AudioClip[] FootStepsGrass;
+    private AudioSource audioSource;
+
 
     [Header("Attack Settings")]
     public float AttackDistance;
@@ -62,6 +66,7 @@ public class SwordEnemy : HitAble
         Player = GameObject.FindGameObjectWithTag("Player");
         animator = this.gameObject.GetComponent<Animator>();
         tpm = Player.GetComponent<ThirdPersonMovement>();
+        audioSource = GetComponent<AudioSource>();  
         // WalkTo(WalkPlaces[rnd]);
         WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
 
@@ -286,6 +291,17 @@ public class SwordEnemy : HitAble
             }
         }
 
+    }
+    void Step()
+    {
+        int n = Random.Range(1, FootStepsGrass.Length);
+        audioSource.clip = FootStepsGrass[n];
+        //add walkPitch value here
+        audioSource.pitch = Random.Range(0.9f, 1.125f);
+        audioSource.PlayOneShot(audioSource.clip);
+        // move picked sound to index 0 so it's not picked next time
+        FootStepsGrass[n] = FootStepsGrass[0];
+        FootStepsGrass[0] = audioSource.clip;
     }
     void StartWalking()
     {

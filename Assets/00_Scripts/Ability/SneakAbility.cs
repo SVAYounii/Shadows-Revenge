@@ -32,7 +32,8 @@ public class SneakAbility : MonoBehaviour
         // Check if the cooldown has passed to activate the sneak ability again
         if (Time.time > nextTimeAvailable)
         {
-            NotAvailbleImage.SetActive(false);
+            if (NotAvailbleImage != null)
+                NotAvailbleImage.SetActive(false);
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 isSneaking = true;
@@ -42,7 +43,11 @@ public class SneakAbility : MonoBehaviour
             }
         }
         else
-            NotAvailbleImage.SetActive(true);
+        {
+            if (NotAvailbleImage != null)
+                NotAvailbleImage.SetActive(true);
+
+        }
 
 
 

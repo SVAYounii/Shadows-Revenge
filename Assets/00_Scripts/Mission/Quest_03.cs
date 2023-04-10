@@ -42,6 +42,8 @@ public class Quest_03 : Mission
         Checkpoint.Add(("Go to the house", new Vector3(48.9000015f, 1.90900004f, 90.2799988f), true));
         Checkpoint.Add(("Defeat the enemies", Vector3.zero, false));
         Checkpoint.Add(("Go back to the guy", NPC.transform.position, true));
+        Checkpoint.Add(("", Vector3.zero, false));
+
 
         Director01.played += CutsceneHasStarted;
         Director01.stopped += CutsceneHasStopped;
@@ -137,6 +139,10 @@ public class Quest_03 : Mission
                 }
 
                 ObjectiveText.text = Checkpoint[CurrentCheckpoint].Item1;
+                break;
+            case 6:
+                ObjectiveText.text = "";
+
                 break;
 
         }

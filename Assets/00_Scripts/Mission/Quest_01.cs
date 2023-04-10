@@ -28,6 +28,7 @@ public class Quest_01 : Mission
     public PlayableDirector _directorVillage;
     public PlayableDirector _directorVillageEnd;
     public PlayableDirector _directorEnd;
+    public AudioSource MainMenuMusic;
 
     public Transform CameraPos_01End;
     float dist;
@@ -41,7 +42,7 @@ public class Quest_01 : Mission
     private float fixedDeltaTime;
 
     bool _missionFailed;
-
+    bool fadeout;
     float _nextTime;
 
     private void Awake()
@@ -101,9 +102,18 @@ public class Quest_01 : Mission
         {
             Failed();
         }
-
+        if (fadeout)
+        {
+            MainMenuMusic.volume -= Time.deltaTime * 0.5f;
+            if (MainMenuMusic.volume <= 0)
+            {
+                fadeout = false;
+            }
+        }
         switch (CurrentCheckpoint)
         {
+            case 0:
+                break;
             case 1:
                 //if close to village start cutscene
                 if (dist < 3)
@@ -280,6 +290,10 @@ public class Quest_01 : Mission
         LetPlayerNotMove();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+        if (CurrentCheckpoint == 0)
+        {
+            fadeout = true;
+        }
         //StartCutsceneCamera(true);
         //Canvas.SetActive(false);
     }

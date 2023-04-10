@@ -13,7 +13,9 @@ public class NPC : MonoBehaviour
     public List<Material> Materials = new List<Material>();
     public float StandingDelay;
     public bool AbleToWalk = true;
-
+    [SerializeField]
+    private AudioClip[] FootStepsGrass;
+    private AudioSource audioSource;
 
     [Header("Vision Settings")]
     public bool AbleToSee;
@@ -46,6 +48,7 @@ public class NPC : MonoBehaviour
         Mesh.gameObject.SetActive(true);
         Mesh.gameObject.GetComponent<SkinnedMeshRenderer>().material = Materials[Random.Range(0, Materials.Count)];
         tpm = Player.GetComponent<ThirdPersonMovement>();
+        audioSource = this.GetComponent<AudioSource>();
 
         if (AbleToSee)
             StartCoroutine(FOVRoutine());
@@ -95,6 +98,18 @@ public class NPC : MonoBehaviour
         _isWalking = true;
 
         Agent.SetDestination(WalkPosition[index]);
+    }
+
+    private void Step()
+    {
+        int n = Random.Range(1, FootStepsGrass.Length);
+        audioSource.clip = FootStepsGrass[n];
+        //add walkPitch value here
+        audioSource.pitch = Random.Range(0.9f, 1.125f);
+        audioSource.PlayOneShot(audioSource.clip);
+        // move picked sound to index 0 so it's not picked next time
+        FootStepsGrass[n] = FootStepsGrass[0];
+        FootStepsGrass[0] = audioSource.clip;
     }
 
     bool AgentHasArrived()

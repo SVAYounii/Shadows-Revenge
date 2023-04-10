@@ -10,7 +10,7 @@ public class QuestManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //SceneManager.LoadScene("Mission_01", LoadSceneMode.Additive);
+        SceneManager.LoadScene("Mission_01", LoadSceneMode.Additive);
 
     }
 

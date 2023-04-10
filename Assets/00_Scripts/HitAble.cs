@@ -50,4 +50,5 @@ public abstract class HitAble : MonoBehaviour, IHitAble
 
 
     }
+   
 }

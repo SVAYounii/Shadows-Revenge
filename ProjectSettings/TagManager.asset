@@ -8,6 +8,12 @@ TagManager:
   - QuestLoader
   - DragonBreath
   - Sensei
+  - Wood
+  - Grass
+  - Stone
+  - Dirt
+  - Sand
+  - NPCManager
   layers:
   - Default
   - TransparentFX
