@@ -19,5 +19,10 @@ public class PlayerInfo : HitAble
             PlayerAnim.SetTrigger("IsDead");
             IsDead = true;
         }
+        if (HealthUI != null)
+        {
+            float percent = Health / BaseHealth;
+            HealthUI.fillAmount = percent;
+        }
     }
 }

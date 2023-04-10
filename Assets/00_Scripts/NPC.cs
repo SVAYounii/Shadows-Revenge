@@ -13,7 +13,9 @@ public class NPC : MonoBehaviour
     public List<Material> Materials = new List<Material>();
     public float StandingDelay;
     public bool AbleToWalk = true;
-
+    [SerializeField]
+    private AudioClip[] FootStepsGrass;
+    private AudioSource audioSource;
 
     [Header("Vision Settings")]
     public bool AbleToSee;
@@ -34,6 +36,9 @@ public class NPC : MonoBehaviour
     [HideInInspector]
     public GameObject Player;
 
+    ThirdPersonMovement tpm;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +47,9 @@ public class NPC : MonoBehaviour
         Mesh = transform.Find(NPCName[Random.Range(0, NPCName.Count)]);
         Mesh.gameObject.SetActive(true);
         Mesh.gameObject.GetComponent<SkinnedMeshRenderer>().material = Materials[Random.Range(0, Materials.Count)];
+        tpm = Player.GetComponent<ThirdPersonMovement>();
+        audioSource = this.GetComponent<AudioSource>();
+
         if (AbleToSee)
             StartCoroutine(FOVRoutine());
 
@@ -92,6 +100,18 @@ public class NPC : MonoBehaviour
         Agent.SetDestination(WalkPosition[index]);
     }
 
+    private void Step()
+    {
+        int n = Random.Range(1, FootStepsGrass.Length);
+        audioSource.clip = FootStepsGrass[n];
+        //add walkPitch value here
+        audioSource.pitch = Random.Range(0.9f, 1.125f);
+        audioSource.PlayOneShot(audioSource.clip);
+        // move picked sound to index 0 so it's not picked next time
+        FootStepsGrass[n] = FootStepsGrass[0];
+        FootStepsGrass[0] = audioSource.clip;
+    }
+
     bool AgentHasArrived()
     {
         if (!Agent.hasPath)
@@ -113,7 +133,8 @@ public class NPC : MonoBehaviour
         while (true)
         {
             yield return wait;
-            FieldOfViewCheck();
+            if (!tpm.sneakAbility.isSneaking)
+                FieldOfViewCheck();
         }
     }
     public void FieldOfViewCheck()
