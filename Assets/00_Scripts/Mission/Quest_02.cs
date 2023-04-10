@@ -10,7 +10,6 @@ public class Quest_02 : Mission
 {
     public GameObject EnemiesList;
 
-    public Camera CutsceneCamera;
     public GameObject NPCQuest;
 
     public GameObject MissionFailed;
@@ -18,8 +17,6 @@ public class Quest_02 : Mission
     public TextMeshProUGUI MissionText;
     public TextMeshProUGUI ObjectiveText;
     public TextMeshProUGUI PressFText;
-    public Image Fade;
-    public GameObject Canvas;
     public NPC Enemy;
     public NPC Enemy1;
     public PlayableDirector Director01;
@@ -28,9 +25,8 @@ public class Quest_02 : Mission
     public PlayableDirector Director04;
 
     public AudioClip Grab;
-
     GameObject DragonBreath;
-
+    PlayerInfo playerInfo;
     float dist;
     private float fixedDeltaTime;
 
@@ -75,6 +71,8 @@ public class Quest_02 : Mission
 
         PressFText.GetComponent<TextMeshProUGUI>().text = "Press <color=#fff700>F</color> to Pickup";
         Enemy.AbleToWalk = false;
+        GameObject.FindGameObjectsWithTag("NPCManager").FirstOrDefault().GetComponent<NPCManager>().enabled = true;
+        playerInfo = Player.GetComponent<PlayerInfo>(); 
     }
 
     private void CutsceneHasStopped(PlayableDirector obj)
@@ -85,6 +83,8 @@ public class Quest_02 : Mission
 
     private void CutsceneHasStarted(PlayableDirector obj)
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
         LetPlayerNotMove();
     }
 
@@ -169,7 +169,7 @@ public class Quest_02 : Mission
                         PressFText.gameObject.SetActive(true);
                         if (Input.GetKeyDown(KeyCode.F))
                         {
-                            Player.GetComponent<AudioSource>().PlayOneShot(Grab,0.5f);
+                            Player.GetComponent<AudioSource>().PlayOneShot(Grab, 0.5f);
                             DragonBreath.SetActive(false);
                             CurrentCheckpoint++;
                         }
@@ -194,7 +194,12 @@ public class Quest_02 : Mission
                     }
                     break;
                 case 13:
-                    Completed = true;
+                    if (!_startCheckpoint)
+                    {
+                        _startCheckpoint = false;
+                        NextMission("Mission_02", "Mission_03");
+                        Completed = true;
+                    }
                     break;
 
             }
@@ -241,8 +246,11 @@ public class Quest_02 : Mission
         CurrentCheckpoint = 11;
         Player.GetComponent<CharacterController>().enabled = true;
         Player.GetComponent<ThirdPersonMovement>().enabled = true;
+        playerInfo.Health = playerInfo.BaseHealth;
+        playerInfo.IsDead = false;
+
         Time.timeScale = 1f;
-        Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
+        Time.fixedDeltaTime = 0.02F;
         DragonBreath.SetActive(true);
 
         var tempColor = MissionFailedImage.color;

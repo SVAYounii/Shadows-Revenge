@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerInfo : HitAble
 {
+    public Animator PlayerAnim;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +14,15 @@ public class PlayerInfo : HitAble
     // Update is called once per frame
     void Update()
     {
-        
+        if(Health <=0 && !IsDead)
+        {
+            PlayerAnim.SetTrigger("IsDead");
+            IsDead = true;
+        }
+        if (HealthUI != null)
+        {
+            float percent = Health / BaseHealth;
+            HealthUI.fillAmount = percent;
+        }
     }
 }

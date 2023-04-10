@@ -27,19 +27,23 @@ public class ThirdPersonMovement : MonoBehaviour
     bool isGrounded;
     bool isJumping;
     Vector3 velocity;
-
+    public string IsStandingOn;
     public bool IsAttacking;
     bool ReadyForAttacking = true;
     float _delayAttack = 1.7f;
     float _nextTimeAttack;
     bool _ableToWalk = true;
+    int LayerRay;
+    public SneakAbility sneakAbility;
     void Start()
     {
         trueSpeed = walkSpeed;
         anim = GetComponentInChildren<Animator>();
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
         characterController = GetComponent<CharacterController>();
+        sneakAbility = GetComponentInChildren<SneakAbility>();
+        LayerRay = LayerMask.GetMask("Ground");
     }
 
     // Update is called once per frame
@@ -48,13 +52,35 @@ public class ThirdPersonMovement : MonoBehaviour
         // Raycast to check if the character is on the ground
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.2f);
 
-        // Set the "IsGrounded" parameter in the Animator
-        anim.SetBool("isGrounded", isGrounded);
-
-        if (isGrounded && velocity.y < 0)
+        RaycastHit hit;
+        Ray ray = new Ray(transform.position, Vector3.down);
+        if (Physics.Raycast(ray, out hit,0.5f, LayerRay))
         {
-            velocity.y = -1;
+            IsStandingOn = hit.transform.tag;
         }
+        else
+        {
+            IsStandingOn = "Nothing";
+
+        }
+        if (!_isCrouching && sneakAbility != null && !sneakAbility.isSneaking)
+        {
+            sneakAbility.Update();
+        }
+        if (sneakAbility.isSneaking)
+        {
+            sprinting = false;
+            _isCrouching = false;
+            CrouchSpeed = walkSpeed;
+
+        }
+        // Disable sprinting while sneaking
+        if (_isCrouching)
+        {
+            sprinting = false;
+        }
+
+
 
         movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector3 direction = new Vector3(movement.x, 0, movement.y).normalized;
@@ -69,18 +95,23 @@ public class ThirdPersonMovement : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            _isCrouching = true;
-            anim.SetBool("IsSneaking", _isCrouching);
 
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        if (!sneakAbility.isSneaking)
         {
-            _isCrouching = false;
-            anim.SetBool("IsSneaking", _isCrouching);
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                _isCrouching = true;
+                anim.SetBool("IsSneaking", _isCrouching);
 
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftControl))
+            {
+                _isCrouching = false;
+                anim.SetBool("IsSneaking", _isCrouching);
+
+            }
         }
+
 
         if (!ReadyForAttacking)
         {
@@ -97,6 +128,12 @@ public class ThirdPersonMovement : MonoBehaviour
                 ReadyForAttacking = false;
                 anim.SetTrigger("IsAttacking");
             }
+        }
+
+        // Use sneak ability if available
+        if (!_isCrouching && sneakAbility != null && !sneakAbility.isSneaking)
+        {
+            sneakAbility.Update();
         }
 
 
@@ -120,13 +157,15 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 if (_isCrouching)
                 {
-                    trueSpeed = CrouchSpeed;
+
+                    SetSneakSpeed();
+
                 }
                 else
                 {
-                    trueSpeed = walkSpeed;
+                    ResetSpeed();
                 }
-                anim.SetFloat("Speed", 1);
+
             }
 
         }
@@ -160,6 +199,23 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
         characterController.Move(velocity * Time.deltaTime);
+    }
+
+    public void SetSneakSpeed()
+    {
+        trueSpeed = CrouchSpeed;
+    }
+
+    public void ResetSpeed()
+    {
+        trueSpeed = walkSpeed;
+        anim.SetFloat("Speed", 1f);
+    }
+
+    public void SetCrouch(bool isCrouching)
+    {
+        _isCrouching = isCrouching;
+        anim.SetBool("IsSneaking", isCrouching);
     }
 
     IEnumerator StopWalking(float amount)

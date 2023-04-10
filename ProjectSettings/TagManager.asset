@@ -7,6 +7,13 @@ TagManager:
   - Enemy
   - QuestLoader
   - DragonBreath
+  - Sensei
+  - Wood
+  - Grass
+  - Stone
+  - Dirt
+  - Sand
+  - NPCManager
   layers:
   - Default
   - TransparentFX
@@ -18,7 +25,7 @@ TagManager:
   - Obstacles
   - Enemy
   - Player
-  - 
+  - Post-Processing
   - 
   - 
   - 

@@ -12,6 +12,10 @@ public class SwordEnemy : HitAble
     public List<Vector3> WalkPlaces = new List<Vector3>();
     public NavMeshAgent Agent;
     public float StandingDelay = 5;
+    [SerializeField]
+    private AudioClip[] FootStepsGrass;
+    private AudioSource audioSource;
+
 
     [Header("Attack Settings")]
     public float AttackDistance;
@@ -54,13 +58,15 @@ public class SwordEnemy : HitAble
     }
 
     public State EnemyState;
-
+    ThirdPersonMovement tpm;
 
     // Start is called before the first frame update
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
         animator = this.gameObject.GetComponent<Animator>();
+        tpm = Player.GetComponent<ThirdPersonMovement>();
+        audioSource = GetComponent<AudioSource>();  
         // WalkTo(WalkPlaces[rnd]);
         WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
 
@@ -117,6 +123,8 @@ public class SwordEnemy : HitAble
 
     private void Roam()
     {
+        Agent.speed = 1.5f;
+
         if (AgentHasArrived())
         {
             WalkTo(WalkPlaces[Random.Range(0, WalkPlaces.Count)]);
@@ -181,6 +189,8 @@ public class SwordEnemy : HitAble
     void WalkTo(Vector3 pos)
     {
         _isWalking = true;
+        Agent.speed = 1.5f;
+
         Agent.isStopped = false;
         animator.SetInteger("State", 1);
         Agent.SetDestination(pos);
@@ -227,6 +237,12 @@ public class SwordEnemy : HitAble
 
         float dist = Vector3.Distance(this.transform.position, Player.transform.position);
 
+        if (tpm.sneakAbility.isSneaking)
+        {
+            // Player is sneaking, don't attack
+            EnemyState = State.Roaming;
+            return;
+        }
         if (dist > Agent.stoppingDistance)
         {
             animator.SetInteger("State", 2);
@@ -276,6 +292,17 @@ public class SwordEnemy : HitAble
         }
 
     }
+    void Step()
+    {
+        int n = Random.Range(1, FootStepsGrass.Length);
+        audioSource.clip = FootStepsGrass[n];
+        //add walkPitch value here
+        audioSource.pitch = Random.Range(0.9f, 1.125f);
+        audioSource.PlayOneShot(audioSource.clip);
+        // move picked sound to index 0 so it's not picked next time
+        FootStepsGrass[n] = FootStepsGrass[0];
+        FootStepsGrass[0] = audioSource.clip;
+    }
     void StartWalking()
     {
 
@@ -289,7 +316,8 @@ public class SwordEnemy : HitAble
         while (true)
         {
             yield return wait;
-            FieldOfViewCheck();
+            if (!tpm.sneakAbility.isSneaking)
+                FieldOfViewCheck();
         }
     }
     public void FieldOfViewCheck()
@@ -313,8 +341,11 @@ public class SwordEnemy : HitAble
             else
                 canSeePlayer = false;
         }
-        else if (canSeePlayer)
+        else
+        {
+            EnemyState = State.Roaming;
             canSeePlayer = false;
+        }
     }
 
 }
