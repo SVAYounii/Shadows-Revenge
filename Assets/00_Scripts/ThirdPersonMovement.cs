@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -35,6 +36,12 @@ public class ThirdPersonMovement : MonoBehaviour
     bool _ableToWalk = true;
 
     public SneakAbility sneakAbility;
+
+    private float nextFireTime = 0f;
+    public static int noOfClicks = 0;
+    float lastClickedTime = 0;
+    float maxComboDelay = 1;
+
     void Start()
     {
         trueSpeed = walkSpeed;
@@ -121,11 +128,45 @@ public class ThirdPersonMovement : MonoBehaviour
                 {
                     ReadyForAttacking = false;
                     anim.SetTrigger("IsAttacking");
+                    OnClick();
                 }
             }
 
-            // Use sneak ability if available
-            if (!_isCrouching && sneakAbility != null && !sneakAbility.isSneaking)
+        // Handle attack combo
+        if (Time.time - lastClickedTime > maxComboDelay)
+        {
+            noOfClicks = 0;
+        }
+
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("Hit1"))
+        {
+            anim.SetBool("Hit1", false);
+            
+        }
+
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("Hit2"))
+        {
+            anim.SetBool("Hit2", false);
+        }
+
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("H"))
+        {
+            anim.SetBool("Hit3", false);
+
+            noOfClicks = 0;
+        }
+
+        // Handle mouse clicks for attack combo
+        if (Time.time > nextFireTime)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                OnClick();
+            }
+        }
+
+        // Use sneak ability if available
+        if (!_isCrouching && sneakAbility != null && !sneakAbility.isSneaking)
             {
                 sneakAbility.Update();
             }
@@ -194,6 +235,36 @@ public class ThirdPersonMovement : MonoBehaviour
 
             characterController.Move(velocity * Time.deltaTime);
         }
+
+    private void OnClick()
+    {
+        lastClickedTime = Time.time;
+        noOfClicks++;
+
+        if (noOfClicks == 1)
+        {
+            anim.SetBool("Hit1", true);
+        }
+
+        noOfClicks = Mathf.Clamp(noOfClicks, 0, 3);
+
+        if (noOfClicks >= 2 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("Hit1"))
+        {
+            anim.SetBool("Hit1", false);
+            anim.SetBool("Hit2", true);
+            print("Hit2");
+
+        }
+
+        if (noOfClicks >= 3 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("Hit2"))
+        {
+            anim.SetBool("Hit1", false);
+            anim.SetBool("Hit3", true);
+            print("Hit3");
+        }
+
+        nextFireTime = Time.time + 2f; // Set the cooldown time for attack combo
+    }
 
     public void SetSneakSpeed()
     {
