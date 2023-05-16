@@ -23,7 +23,7 @@
   
   <li>Extract the downloaded files to your preferred directory.</li>
   
-  <li>Launch the game executable and follow the on-screen instructions to install any required dependencies.</li>
+  <li>Open it in Unity(2022.2.5).</li>
   
   <li>Start the game and embark on your journey of revenge!</li>
 </ol>
