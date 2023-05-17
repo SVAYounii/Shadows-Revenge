@@ -1,6 +1,6 @@
 <h1>Shadow's Revenge</h1>
 
-<p>Welcome to Shadow's Revenge, an immersive ninja action game where you step into the shoes of Takumi, a skilled ninja seeking vengeance for the murder of his brother. Dive into a captivating storyline filled with quests and cutscenes.</p>
+<p>Welcome to Shadow's Revenge, an immersive ninja action game where you step into the shoes of Takumi,</p>
 
 <h2>Features</h2>
 
