@@ -68,5 +68,5 @@
 </table>
 
 <h2>Support</h2>
-<p>If you encounter any issues or have any questions regarding Shadow's Revenge, please feel free to contact us at support@example.com.</p>
+<p>If you encounter any issues or have any questions regarding Shadow's Revenge, please feel free to contact us.</p>
 <p>We hope you enjoy the game and uncover the truth behind your brother's murder!</p>
